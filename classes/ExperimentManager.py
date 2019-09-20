@@ -17,17 +17,19 @@ class ExperimentManager:
     def run_experiment(self, name, model, data_path, data_iterator):
         """
         :param name: Name of run.
-        :param model: Python function that is the model (keras/tensorflow)
+        :param model: Path to saved and compiled keras model.
         :param data_path: Path to dataset
         :param data_iterator: Iterator object that will yield data for training or testing accordingly
         :return:
         """
-        experiment = Experiment(name, os.path.join(self.full_path, name), model, data_path, data_iterator)
+        experiment = Experiment(name, self.full_path, model, data_path, data_iterator)
         self.experiments.append(experiment.full_path)
+        experiment.run_test()
+        return experiment
 
 
 if __name__ == '__main__':
-   e = ExperimentManager('temp', '~/Projects/coding_project/ExperimentManager/')
-   e.run_experiment('tepmp', min, '/x/x/x', object)
+   e = ExperimentManager('temp', '/home/guy/Projects/coding_projects/ExperimentManager/classes')
+   exp = e.run_experiment('Experiment', min, '/x/x/x', object)
    x = json.dumps(e.__dict__)
-   print(x)
+   print(exp.log_path)
