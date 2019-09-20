@@ -19,11 +19,11 @@ class Experiment:
         """
         self.name = name
         path = os.path.join(base_path, name)
-        if not is_unique_path(base_path, name):
-            raise Exception("Path is not unique")
+        # if not is_unique_path(base_path, name):
+        #     raise Exception("Path is not unique")
         self.full_path = path
         self.log_path = os.path.join(self.full_path, name + '_log_history.log')
-        self.model = keras.models.load_model(model_path)
+        self.model = keras.models.load_model(os.path.join(self.full_path, model_path))
         self.dataset_path = dataset_path
         self.data_iterator = data_iterator
         self.num_epochs = num_epochs
@@ -44,10 +44,17 @@ class Experiment:
                         log.writelines([])
 
     def run_test(self):
-        pass
+        raise NotImplementedError
+
+    def test_log_file(self):
+        # Todo: Run test on init log file
+        with open(self.log_path, 'w') as log:
+            self.init_training_log(log)
 
     def init_training_log(self, log_file):
-        log_file.writelines(['Training started on {} at {}'])
+        time_struct = time.localtime()
+        log_file.write('Training started on {}/{}/{} at {}:{}:{}\n'.format(time_struct[2], time_struct[1],
+                                                                               time_struct[0], time_struct[3],
+                                                                               time_struct[4], time_struct[5]))
         # Todo: Assert the log_file.write is a legal print function
-        keras.utils.print_summary(self.model, print_fn=log_file.write)
-
+        keras.utils.print_summary(self.model, print_fn=lambda x: log_file.write(x + '\n'))
