@@ -1,2 +1,29 @@
 ExperimentManager is a tool to manage deep learning experiments. 
 This include different architectures, datasets and hyperparameters.
+
+
+    #### Classes ####
+
+--- ExperimentManager ---
+holds meta data about the entire project/experiment.
+sits in a directory with subdirectories for each run of the experiment.
+
+Methods -
+1) __init__
+2) run_experiment - need to get a model, iterator for batching, name of run
+3) analyze_log - after experiment finished running this function analyzes the log according to metrics. Maybe abstract?
+4) 
+
+
+--- Experiment ---
+Holds the current architecture, dataset, parameters, training log. sits in a directory below ExperimentManager.
+
+Methods - 
+1) run_train
+2) run_test
+3) get_stats - See statistics about experiment 
+
+
+
+	#### Scripts ####
+exps_manager.py: searches the directory that was called from for an ExperimentManager object and loads data about it.
